@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=3 uid="uid://iylbjp3uyvci"]
+
+[ext_resource type="PackedScene" uid="uid://ma5u5e1omlxg" path="res://balloon.tscn" id="1_2xfbp"]
+
+[sub_resource type="GDScript" id="GDScript_ntenh"]
+script/source = "extends Node3D
+
+const RAY_LENGTH = 1000.0
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(_delta: float) -> void:
+	pass
+
+func _input(event):
+	var space_state = get_world_3d().direct_space_state
+	if event is InputEventMouseButton and event.pressed and event.button_index == 1:
+		var camera3d = $Camera3D
+		var from = camera3d.project_ray_origin(event.position)
+		var to = from + camera3d.project_ray_normal(event.position) * RAY_LENGTH
+		var query = PhysicsRayQueryParameters3D.create(from, to);
+		query.collide_with_areas = true
+		var result = space_state.intersect_ray(query)
+		if result:
+			$Balloon._on_mouse_down()
+"
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_yvdnh"]
+
+[sub_resource type="Sky" id="Sky_k7m8o"]
+sky_material = SubResource("PhysicalSkyMaterial_yvdnh")
+
+[sub_resource type="Environment" id="Environment_cja6d"]
+background_mode = 2
+sky = SubResource("Sky_k7m8o")
+
+[node name="World" type="Node3D"]
+script = SubResource("GDScript_ntenh")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.2966)
+
+[node name="Balloon" parent="." instance=ExtResource("1_2xfbp")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_cja6d")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 7.67777, 0)

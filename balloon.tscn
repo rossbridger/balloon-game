@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://ma5u5e1omlxg"]
+
+[ext_resource type="Script" path="res://balloon.gd" id="1_xp4t2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vm2ps"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_2slmu"]
+material = SubResource("StandardMaterial3D_vm2ps")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_abldt"]
+
+[node name="Balloon" type="Node3D"]
+script = ExtResource("1_xp4t2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_2slmu")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_abldt")
