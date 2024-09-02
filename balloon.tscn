@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://ma5u5e1omlxg"]
+[gd_scene load_steps=7 format=3 uid="uid://ma5u5e1omlxg"]
 
 [ext_resource type="Script" path="res://balloon.gd" id="1_xp4t2"]
+[ext_resource type="PackedScene" uid="uid://bfo5uqxysl03q" path="res://health_bar.tscn" id="2_4cbb2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vm2ps"]
 albedo_color = Color(1, 0, 0, 1)
@@ -9,6 +10,9 @@ albedo_color = Color(1, 0, 0, 1)
 material = SubResource("StandardMaterial3D_vm2ps")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_abldt"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_lv1y8"]
+viewport_path = NodePath("SubViewport")
 
 [node name="Balloon" type="Node3D"]
 script = ExtResource("1_xp4t2")
@@ -20,3 +24,14 @@ mesh = SubResource("SphereMesh_2slmu")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("SphereShape3D_abldt")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+handle_input_locally = false
+
+[node name="HealthBar" parent="SubViewport" instance=ExtResource("2_4cbb2")]
+clip_contents = true
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.904353, 0)
+texture = SubResource("ViewportTexture_lv1y8")
